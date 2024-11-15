@@ -1,10 +1,8 @@
 const yauzl = require('yauzl-promise');
 const fs = require('node:fs');
-const fsp = require('node:fs/promises');
 const PNG = require('pngjs').PNG;
 const path = require('node:path');
 const { pipeline } = require('stream/promises');
-const { EOL } = require('node:os');
 
 /**
  * Description: decompress file from given pathIn, write to given pathOut
@@ -44,7 +42,7 @@ const readDir = async dir => {
 	try {
 		//fsp = fs/promises
 		//reads each file in the folder, then joins the filename string with the directory string to get the full path to the file
-		return (await fsp.readdir(dir)).map(file => path.join(dir, file));
+		return (await fs.promises.readdir(dir)).map(file => path.join(dir, file));
 	} catch (err) {
 		console.log('error in readDir');
 		throw err;
