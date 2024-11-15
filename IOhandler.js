@@ -40,12 +40,30 @@ const unzip = async (pathIn, pathOut) => {
  */
 const readDir = async dir => {
 	try {
-		//fsp = fs/promises
 		//reads each file in the folder, then joins the filename string with the directory string to get the full path to the file
-		return (await fs.promises.readdir(dir)).map(file => path.join(dir, file));
+		return (await fs.promises.readdir(dir)).map(file =>
+			path.join(dir, file)
+		);
 	} catch (err) {
 		console.log('error in readDir');
 		throw err;
+	}
+};
+
+const grayScaleFilter = (data, width, height) => {
+	//loop through each pixel like how the docs do it 
+	for (let y = 0; y < height; y++) {
+		for (let x = 0; x < width; x++) {
+			const idx = (width * y + x) << 2;
+			//gray = (red + green + blue)/3
+			const red = data[idx];
+			const green = data[idx + 1];
+			const blue = data[idx + 2];
+			const gray = Math.round((red + green + blue) / 3);
+			data[idx] = gray;
+			data[idx + 1] = gray;
+			data[idx + 2] = gray;
+		}
 	}
 };
 
@@ -66,19 +84,7 @@ const grayScale = (pathIn, pathOut) => {
 			})
 		)
 		.on('parsed', function () {
-			for (let y = 0; y < this.height; y++) {
-				for (let x = 0; x < this.width; x++) {
-					const idx = (this.width * y + x) << 2; 
-					// gray = (red + green + blue)/3
-					const red = this.data[idx];
-					const green = this.data[idx + 1];
-					const blue = this.data[idx + 2];
-					const gray = Math.round((red + green + blue) / 3);
-					this.data[idx] = gray;
-					this.data[idx + 1] = gray;
-					this.data[idx + 2] = gray;
-				}
-			}
+			grayScaleFilter(this.data, this.width, this.height);
 			this.pack().pipe(fs.createWriteStream(pathOut));
 		});
 };
