@@ -8,7 +8,7 @@ Assume that the front-end has already been built for you, and your back end will
 
 **to these photos.** This assignment is all about getting comfortable working with libraries (both core to Node.js and third-party), reading documentation, writing modular code, and understanding asynchronous programming/streams within web development. 
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/935b17de-42ba-42ac-af53-b8f1f0ce63c7/cc890143-e625-4ba8-b713-a2800ffc9ee4/Untitled.png)
+![filters](public/vins.png)
 
 Note: Apps like Instagram have a lot of filters available, but we’re going to keep this application very simple, and focus only on the “Inkwell” filter, which is basically a grayscale filter (makes a picture black and white). In the future, you could always expand this app so that it supports more filters, and then, it would actually be a pretty neat portfolio project!
 
@@ -28,7 +28,7 @@ The unzipping operation should create a directory called unzipped with all your 
 
 Note: Be careful. MacOS often will add hidden files into directories (like .DS_Store) or __MACOSX. You might need to keep this in mind when you are working with folders. 
 
-!https://prod-files-secure.s3.us-west-2.amazonaws.com/935b17de-42ba-42ac-af53-b8f1f0ce63c7/efac550c-ce06-4850-b4a2-e34554ee4a81/Untitled.png
+![files](public/files.png)
 
 (3) Create another function in `ioHandler.js` called `readDir`. It will take in a directory path as a parameter, and will give back an array of file paths for all the png files that exist in that directory. 
 
