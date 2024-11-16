@@ -41,9 +41,9 @@ const unzip = async (pathIn, pathOut) => {
 const readDir = async dir => {
 	try {
 		//reads each file in the folder, then joins the filename string with the directory string to get the full path to the file
-		return (await fs.promises.readdir(dir)).map(file =>
-			path.join(dir, file)
-		);
+		return (await fs.promises.readdir(dir, { withFileTypes: true }))
+		.filter(file => file.name.slice(-4) === '.png')
+		.map(file => path.join(dir, file.name));
 	} catch (err) {
 		console.log('error in readDir');
 		throw err;
@@ -51,7 +51,7 @@ const readDir = async dir => {
 };
 
 const grayScaleFilter = (data, width, height) => {
-	//loop through each pixel like how the docs do it 
+	//loop through each pixel like how the docs do it
 	for (let y = 0; y < height; y++) {
 		for (let x = 0; x < width; x++) {
 			const idx = (width * y + x) << 2;
