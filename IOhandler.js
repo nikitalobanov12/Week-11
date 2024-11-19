@@ -50,7 +50,6 @@ const readDir = async dir => {
 	}
 };
 
-
 const grayScaleFilter = (data, idx) => {
 	//gray = (red + green + blue)/3
 	const red = data[idx];
@@ -64,81 +63,80 @@ const grayScaleFilter = (data, idx) => {
 };
 
 const sepiaFilter = (data, idx) => {
-    const red = data[idx];
-    const green = data[idx + 1];
-    const blue = data[idx + 2];
+	const red = data[idx];
+	const green = data[idx + 1];
+	const blue = data[idx + 2];
 
 	//got this formula from stack overflow https://stackoverflow.com/questions/1061093/how-is-a-sepia-tone-created
-    data[idx] = Math.min((red * .393 ) + (green * .769) + (blue * .189)) // red
-    data[idx + 1] = Math.min((red * .349) + (green *.686) + (blue * .168)) // green
-    data[idx + 2] = Math.min((red * .272) + (green *.534) + (blue * .131)) // blue
+	data[idx] = Math.min(red * 0.393 + green * 0.769 + blue * 0.189); // red
+	data[idx + 1] = Math.min(red * 0.349 + green * 0.686 + blue * 0.168); // green
+	data[idx + 2] = Math.min(red * 0.272 + green * 0.534 + blue * 0.131); // blue
 
-    return null;
+	return null;
 };
 
 const solarizeFilter = (data, idx) => {
-    const threshold = 128;
-    const invert = value => value > threshold ? 255 - value : value; // if the value is greater than the threshhold (128 in this case), invert it
+	const threshold = 128;
+	const invert = value => (value > threshold ? 255 - value : value); // if the value is greater than the threshhold (128 in this case), invert it
 
-    data[idx] = invert(data[idx]); // red 
-    data[idx + 1] = invert(data[idx + 1]); // green
-    data[idx + 2] = invert(data[idx + 2]); // blue
+	data[idx] = invert(data[idx]); // red
+	data[idx + 1] = invert(data[idx + 1]); // green
+	data[idx + 2] = invert(data[idx + 2]); // blue
 
-    return null;
+	return null;
 };
 
 const invertFilter = (data, idx) => {
 	const invert = value => 255 - value;
-	data[idx] = invert(data[idx]); // red 
-    data[idx + 1] = invert(data[idx + 1]); // green
-    data[idx + 2] = invert(data[idx + 2]); // blue
+	data[idx] = invert(data[idx]); // red
+	data[idx + 1] = invert(data[idx + 1]); // green
+	data[idx + 2] = invert(data[idx + 2]); // blue
 
-    return null;
-}
+	return null;
+};
 
 const hueShift = (data, idx) => {
 	const red = data[idx];
-    const green = data[idx + 1];
-    const blue = data[idx + 2];
+	const green = data[idx + 1];
+	const blue = data[idx + 2];
 
 	data[idx] = green;
 	data[idx + 1] = blue;
 	data[idx + 2] = green;
 
 	return null;
-}
-
+};
 
 /* 
 helper function that handles looping through each pixel in the png image, it then calls on a function to apply a filter to it 
 */
 const filterLogic = (data, width, height, filterType) => {
 	let applyFilter;
-	console.log(filterType)
-    switch (filterType) {
-        case 'grayscale':
-            applyFilter = grayScaleFilter;
-            break;
-        case 'sepia':
-            applyFilter = sepiaFilter;
-            break;
-        case 'solarize':
-            applyFilter = solarizeFilter;
-            break;
+	console.log(filterType);
+	switch (filterType) {
+		case 'grayscale':
+			applyFilter = grayScaleFilter;
+			break;
+		case 'sepia':
+			applyFilter = sepiaFilter;
+			break;
+		case 'solarize':
+			applyFilter = solarizeFilter;
+			break;
 		case 'invert':
 			applyFilter = invertFilter;
 			break;
 		case 'hueshift':
 			applyFilter = hueShift;
 			break;
-        default:
-            throw new Error('Unsupported filter type');
-    }
+		default:
+			throw new Error('Unsupported filter type');
+	}
 	//loop through each pixel like how the docs do it
 	for (let y = 0; y < height; y++) {
 		for (let x = 0; x < width; x++) {
 			const idx = (width * y + x) << 2;
-			applyFilter(data, idx)
+			applyFilter(data, idx);
 		}
 	}
 };

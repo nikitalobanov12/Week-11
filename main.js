@@ -16,8 +16,10 @@ async function main() {
 				'Which filter would you like to apply? \n1: grayscale \n2: sepia \n3: solarize \n4: invert \n5: hue shift \n'
 			);
 
-			const normalizedInput = userInput.toLowerCase().trim().replace(/\s+/g, '');
-			// console.log(`user input: ${userInput}`)
+			const normalizedInput = userInput
+				.toLowerCase()
+				.trim()
+				.replace(/\s+/g, '');
 			//create an object to assign the users input to a function
 			const filterObject = {
 				1: 'grayscale',
@@ -29,7 +31,7 @@ async function main() {
 				sepia: 'sepia',
 				solarize: 'solarize',
 				invert: 'invert',
-				hueshift : 'hueshift',
+				hueshift: 'hueshift',
 			};
 			const filterType = filterObject[normalizedInput];
 			if (!filterType) throw new Error('invalid input');
